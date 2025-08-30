@@ -13,5 +13,6 @@ public class SearchDto {
     private String quality;
     private String releasedDateFrom;
     private String releasedDateTo;
-    private String addedDate;
+    private String addedDateFrom;
+    private String addedDateTo;
 }

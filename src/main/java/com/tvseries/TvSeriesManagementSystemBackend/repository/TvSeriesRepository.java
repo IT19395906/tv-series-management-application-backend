@@ -17,12 +17,14 @@ public interface TvSeriesRepository extends JpaRepository<TvSeries, Long> {
                         "(:quality IS NULL OR LOWER(t.quality) LIKE LOWER(CONCAT('%', :quality, '%'))) AND " +
                         "(:releasedDateFrom IS NULL OR t.releasedDate >= :releasedDateFrom) AND " +
                         "(:releasedDateTo IS NULL OR t.releasedDate <= :releasedDateTo) AND " +
-                        "(:addedDate IS NULL OR LOWER(t.addedDate) LIKE LOWER(CONCAT('%', :addedDate, '%')))")
+                        "(:addedDateFrom IS NULL OR t.addedDate >= :addedDateFrom) AND " +
+                        "(:addedDateTo IS NULL OR t.addedDate <= :addedDateTo)")
         List<TvSeries> search(
                         @Param("title") String title,
                         @Param("category") String category,
                         @Param("quality") String quality,
                         @Param("releasedDateFrom") String releasedDateFrom,
                         @Param("releasedDateTo") String releasedDateTo,
-                        @Param("addedDate") String addedDate);
+                        @Param("addedDateFrom") String addedDateFrom,
+                        @Param("addedDateTo") String addedDateTo);
 }
