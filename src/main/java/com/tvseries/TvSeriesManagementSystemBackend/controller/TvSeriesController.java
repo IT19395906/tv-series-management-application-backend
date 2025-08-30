@@ -15,7 +15,6 @@ import com.tvseries.TvSeriesManagementSystemBackend.dto.SearchDto;
 import com.tvseries.TvSeriesManagementSystemBackend.dto.SubmitDto;
 import com.tvseries.TvSeriesManagementSystemBackend.entity.TvSeries;
 import com.tvseries.TvSeriesManagementSystemBackend.service.TvSeriesService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/tvseries")
