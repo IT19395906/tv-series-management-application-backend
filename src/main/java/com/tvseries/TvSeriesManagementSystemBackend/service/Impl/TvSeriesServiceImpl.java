@@ -37,7 +37,8 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public List<TvSeries> get(SearchDto dto) {
-        return repository.search(dto.getTitle(), dto.getCategory(), dto.getQuality(), dto.getReleasedDate(), dto.getAddedDate());
+        return repository.search(dto.getTitle(), dto.getCategory(), dto.getQuality(), dto.getReleasedDateFrom(),
+                dto.getReleasedDateTo(), dto.getAddedDate());
     }
 
 }

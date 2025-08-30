@@ -11,6 +11,7 @@ public class SearchDto {
     private String title;
     private String category;
     private String quality;
-    private String releasedDate;
+    private String releasedDateFrom;
+    private String releasedDateTo;
     private String addedDate;
 }
