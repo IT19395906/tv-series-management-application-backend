@@ -11,6 +11,7 @@ import com.tvseries.TvSeriesManagementSystemBackend.entity.TvSeries;
 
 @Repository
 public interface TvSeriesRepository extends JpaRepository<TvSeries, Long> {
+
         @Query("SELECT t FROM TvSeries t WHERE " +
                         "(:title IS NULL OR LOWER(t.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND " +
                         "(:category IS NULL OR LOWER(t.category) LIKE LOWER(CONCAT('%', :category, '%'))) AND " +
@@ -27,4 +28,8 @@ public interface TvSeriesRepository extends JpaRepository<TvSeries, Long> {
                         @Param("releasedDateTo") String releasedDateTo,
                         @Param("addedDateFrom") String addedDateFrom,
                         @Param("addedDateTo") String addedDateTo);
+
+        @Query("SELECT t FROM TvSeries t WHERE LOWER(t.title) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+        List<TvSeries> searchByQuery(@Param("keyword") String keyword);
+
 }

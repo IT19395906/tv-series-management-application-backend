@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,10 @@ import com.tvseries.TvSeriesManagementSystemBackend.entity.TvSeries;
 import com.tvseries.TvSeriesManagementSystemBackend.service.TvSeriesService;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/tvseries")
@@ -52,6 +57,22 @@ public class TvSeriesController {
     @PostMapping("getBySearch")
     public List<TvSeries> get(@RequestBody SearchDto dto) {
         return service.get(dto);
+    }
+
+    @GetMapping("getAll")
+    public Page<TvSeries> getAll(Pageable pageable) {
+        return service.getAllSeries(pageable);
+    }
+
+    @GetMapping("search")
+    public List<TvSeries> searchByQuery(@RequestParam String keyword) {
+        return service.searchByQuery(keyword);
+    }
+
+    @GetMapping("getById/{id}")
+    public ResponseEntity<TvSeries> getById(@PathVariable Long id) {
+        TvSeries tvseries = service.getById(id);
+        return ResponseEntity.ok(tvseries);
     }
 
 }
