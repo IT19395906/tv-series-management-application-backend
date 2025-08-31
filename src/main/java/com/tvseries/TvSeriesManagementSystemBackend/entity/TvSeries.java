@@ -23,6 +23,7 @@ public class TvSeries {
     private String category;
     private String quality;
     private String trailer;
+    private String status;
     private String releasedDate;
     private int seasons;
     private int episodes;

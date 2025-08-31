@@ -16,6 +16,8 @@ import com.tvseries.TvSeriesManagementSystemBackend.dto.SubmitDto;
 import com.tvseries.TvSeriesManagementSystemBackend.entity.TvSeries;
 import com.tvseries.TvSeriesManagementSystemBackend.service.TvSeriesService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/tvseries")
 @CrossOrigin(origins = "*")
@@ -43,7 +45,7 @@ public class TvSeriesController {
     }
 
     @PostMapping("add")
-    public TvSeries add(@RequestBody SubmitDto dto) {
+    public TvSeries add(@Valid @RequestBody SubmitDto dto) {
         return service.add(dto);
     }
 
