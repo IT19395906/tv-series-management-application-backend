@@ -20,4 +20,6 @@ public interface TvSeriesService {
 
     TvSeries getById(Long id);
 
+    void deleteById(Long id);
+
 }

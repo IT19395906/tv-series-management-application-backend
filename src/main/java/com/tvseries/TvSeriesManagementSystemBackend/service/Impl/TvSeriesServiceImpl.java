@@ -67,7 +67,21 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public TvSeries getById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Tv Series Not Found"));
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Tv Series Not Found With Id" + id));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Tv Series Not Found With Id" + id);
+        }
+
+        try {
+            repository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Some Error Occured");
+        }
     }
 
 }

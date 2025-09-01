@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,6 +74,12 @@ public class TvSeriesController {
     public ResponseEntity<TvSeries> getById(@PathVariable Long id) {
         TvSeries tvseries = service.getById(id);
         return ResponseEntity.ok(tvseries);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        service.deleteById(id);
+        return ResponseEntity.ok("Successfully Deleted Tv series");
     }
 
 }
