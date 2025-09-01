@@ -18,17 +18,33 @@ public class TvSeries {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Column(nullable = false)
     private String title;
-    @Column(columnDefinition = "TEXT")
+    
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
+    
+    @Column(nullable = false)
     private String language;
+    
+    @Column(nullable = false)
     private String category;
+    
     private String quality;
+    
     private String trailer;
+    
     private String status;
+    
+    @Column(nullable = false)
     private String releasedDate;
-    private int seasons;
-    private int episodes;
+    
+    private Integer seasons;
+    
+    private Integer episodes;
+    
     private String img;
+    
     private String addedDate;
 }
