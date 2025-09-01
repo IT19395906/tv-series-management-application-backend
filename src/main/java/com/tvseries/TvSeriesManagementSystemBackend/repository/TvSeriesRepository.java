@@ -1,5 +1,6 @@
 package com.tvseries.TvSeriesManagementSystemBackend.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,8 +25,8 @@ public interface TvSeriesRepository extends JpaRepository<TvSeries, Long> {
                         @Param("title") String title,
                         @Param("category") String category,
                         @Param("quality") String quality,
-                        @Param("releasedDateFrom") String releasedDateFrom,
-                        @Param("releasedDateTo") String releasedDateTo,
+                        @Param("releasedDateFrom") LocalDate releasedDateFrom,
+                        @Param("releasedDateTo") LocalDate releasedDateTo,
                         @Param("addedDateFrom") String addedDateFrom,
                         @Param("addedDateTo") String addedDateTo);
 

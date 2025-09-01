@@ -1,5 +1,7 @@
 package com.tvseries.TvSeriesManagementSystemBackend.dto;
 
+import java.time.LocalDate;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -28,7 +30,7 @@ public class SubmitDto {
     private String trailer;
     
     @NotNull(message = "ReleasedDate is required")
-    private String releasedDate;
+    private LocalDate releasedDate;
     
     @Min(value=1, message="Seasons must be greater than zero")
     private Integer seasons;

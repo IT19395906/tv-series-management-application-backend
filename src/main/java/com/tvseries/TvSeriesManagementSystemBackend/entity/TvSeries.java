@@ -1,5 +1,7 @@
 package com.tvseries.TvSeriesManagementSystemBackend.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,7 +40,7 @@ public class TvSeries {
     private String status;
     
     @Column(nullable = false)
-    private String releasedDate;
+    private LocalDate releasedDate;
     
     private Integer seasons;
     
