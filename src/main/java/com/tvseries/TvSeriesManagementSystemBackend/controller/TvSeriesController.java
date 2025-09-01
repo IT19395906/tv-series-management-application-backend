@@ -1,7 +1,9 @@
 package com.tvseries.TvSeriesManagementSystemBackend.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -51,8 +53,11 @@ public class TvSeriesController {
     }
 
     @PostMapping("add")
-    public TvSeries add(@Valid @RequestBody SubmitDto dto) {
-        return service.add(dto);
+    public ResponseEntity<Map<String, String>> add(@Valid @RequestBody SubmitDto dto) {
+        service.add(dto);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Tv Series Uploaded Successfully");
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("getBySearch")
