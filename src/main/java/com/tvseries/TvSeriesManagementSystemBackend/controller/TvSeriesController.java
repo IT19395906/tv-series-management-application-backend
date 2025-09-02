@@ -1,9 +1,7 @@
 package com.tvseries.TvSeriesManagementSystemBackend.controller;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tvseries.TvSeriesManagementSystemBackend.common.CommonResponse;
 import com.tvseries.TvSeriesManagementSystemBackend.dto.SearchDto;
 import com.tvseries.TvSeriesManagementSystemBackend.dto.SubmitDto;
 import com.tvseries.TvSeriesManagementSystemBackend.entity.TvSeries;
@@ -23,6 +22,7 @@ import com.tvseries.TvSeriesManagementSystemBackend.service.TvSeriesService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -53,16 +53,21 @@ public class TvSeriesController {
     }
 
     @PostMapping("add")
-    public ResponseEntity<Map<String, String>> add(@Valid @RequestBody SubmitDto dto) {
+    public ResponseEntity<CommonResponse<Void>> add(@Valid @RequestBody SubmitDto dto) {
         service.add(dto);
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "Tv Series Uploaded Successfully");
+        CommonResponse<Void> response = new CommonResponse<>("Tv Series Uploaded Successfully", null);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("getBySearch")
-    public List<TvSeries> get(@RequestBody SearchDto dto) {
-        return service.get(dto);
+    public ResponseEntity<CommonResponse<List<TvSeries>>> get(@RequestBody SearchDto dto) {
+        List<TvSeries> res = service.get(dto);
+        if (res.isEmpty()) {
+            CommonResponse<List<TvSeries>> response = new CommonResponse<>("Tv Series Not Found", null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        CommonResponse<List<TvSeries>> response = new CommonResponse<>("Successfully Found Data", res);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("getAll")
