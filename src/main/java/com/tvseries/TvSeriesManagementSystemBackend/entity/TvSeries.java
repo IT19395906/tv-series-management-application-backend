@@ -49,4 +49,6 @@ public class TvSeries {
     private String img;
     
     private String addedDate;
+
+    private String addedBy;
 }

@@ -40,6 +40,7 @@ public class TvSeriesServiceImpl implements TvSeriesService {
         series.setImg(dto.getImg());
         series.setStatus(dto.getStatus());
         series.setAddedDate(LocalDate.now().toString());
+        series.setAddedBy("Admin");
         return repository.save(series);
     }
 
