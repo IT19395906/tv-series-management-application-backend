@@ -3,11 +3,14 @@ package com.tvseries.TvSeriesManagementSystemBackend.entity;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -53,5 +56,8 @@ public class TvSeries {
 
     private String addedBy;
 
+    @ElementCollection
+    @CollectionTable(name = "tags" , joinColumns = @JoinColumn(name="tvseries_id"))
+    @Column(name = "tag")
     private List<String> tags;
 }
