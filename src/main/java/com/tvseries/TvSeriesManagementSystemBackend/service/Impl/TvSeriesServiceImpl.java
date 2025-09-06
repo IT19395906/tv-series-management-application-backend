@@ -38,6 +38,7 @@ public class TvSeriesServiceImpl implements TvSeriesService {
         series.setEpisodes(dto.getEpisodes());
         series.setTrailer(dto.getTrailer());
         series.setImg(dto.getImg());
+        series.setTags(dto.getTags());
         series.setStatus(dto.getStatus());
         series.setAddedDate(LocalDate.now().toString());
         series.setAddedBy("Admin");

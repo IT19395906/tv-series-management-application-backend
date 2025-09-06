@@ -1,6 +1,7 @@
 package com.tvseries.TvSeriesManagementSystemBackend.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,4 +52,6 @@ public class TvSeries {
     private String addedDate;
 
     private String addedBy;
+
+    private List<String> tags;
 }
