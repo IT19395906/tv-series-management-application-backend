@@ -87,9 +87,10 @@ public class TvSeriesController {
     }
 
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
-        service.deleteById(id);
-        return ResponseEntity.ok("Successfully Deleted Tv series");
+    public ResponseEntity<CommonResponse<Void>> delete(@PathVariable Long id) {
+       service.deleteById(id);
+        CommonResponse<Void> response = new CommonResponse<>("Successfully Deleted Tv series", null);
+        return ResponseEntity.ok(response);
     }
 
 }
