@@ -31,6 +31,8 @@ public class SubmitDto {
     private List<String> tags;
     
     private String quality;
+
+    private String format;
     
     private String trailer;
     

@@ -33,6 +33,7 @@ public class TvSeriesServiceImpl implements TvSeriesService {
         series.setCategory(dto.getCategory());
         series.setLanguage(dto.getLanguage());
         series.setQuality(dto.getQuality());
+        series.setFormat(dto.getFormat());
         series.setReleasedDate(dto.getReleasedDate());
         series.setSeasons(dto.getSeasons());
         series.setEpisodes(dto.getEpisodes());

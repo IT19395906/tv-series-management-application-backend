@@ -39,6 +39,8 @@ public class TvSeries {
     
     private String quality;
     
+    private String format;
+    
     private String trailer;
     
     private String status;
