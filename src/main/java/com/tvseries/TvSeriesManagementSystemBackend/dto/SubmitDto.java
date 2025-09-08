@@ -3,6 +3,7 @@ package com.tvseries.TvSeriesManagementSystemBackend.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -44,6 +45,14 @@ public class SubmitDto {
     
     @Min(value=1, message="Episodes must be greater than zero")
     private Integer episodes;
+
+    @Min(value=1, message="IMDB Rate must be greater than zero")
+    @Max(value =10, message="IMDB Rate must be less than 10")
+    private double imdb;
+
+    @Min(value=1, message="RO must be greater than zero")
+    @Max(value =100, message="RO must be less than 100")
+    private Integer ro;
     
     private String status;
     

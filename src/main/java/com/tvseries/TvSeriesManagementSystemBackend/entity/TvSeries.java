@@ -24,42 +24,46 @@ public class TvSeries {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(nullable = false)
     private String title;
-    
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
-    
+
     @Column(nullable = false)
     private String language;
-    
+
     @Column(nullable = false)
     private String category;
-    
+
     private String quality;
-    
+
     private String format;
-    
+
     private String trailer;
-    
+
     private String status;
-    
+
     @Column(nullable = false)
     private LocalDate releasedDate;
-    
+
     private Integer seasons;
-    
+
     private Integer episodes;
-    
+
+    private double imdb;
+
+    private Integer ro;
+
     private String img;
-    
+
     private String addedDate;
 
     private String addedBy;
 
     @ElementCollection
-    @CollectionTable(name = "tags" , joinColumns = @JoinColumn(name="tvseries_id"))
+    @CollectionTable(name = "tags", joinColumns = @JoinColumn(name = "tvseries_id"))
     @Column(name = "tag")
     private List<String> tags;
 }
