@@ -30,9 +30,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
-                // .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
-        .authorizeHttpRequests(auth ->auth.requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated()) // comment this and uncomment above if want disable jwt
-        .addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class); // comment this if want disable jwt
+                // .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()); // uncomment this to allow all requests without jwt authentication
+        .authorizeHttpRequests(auth ->auth.requestMatchers("/api/auth/**").permitAll().requestMatchers("/api/tvseries/getAll").permitAll().anyRequest().authenticated()) // comment this to disable jwt
+        .addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class); // comment this to disable jwt 
         return httpSecurity.build();
     }
 
