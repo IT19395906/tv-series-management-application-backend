@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tvseries.TvSeriesManagementSystemBackend.auth.JwtUtil;
 import com.tvseries.TvSeriesManagementSystemBackend.dto.AuthRequest;
 import com.tvseries.TvSeriesManagementSystemBackend.dto.AuthResponse;
-import com.tvseries.TvSeriesManagementSystemBackend.service.Impl.UserDetailsServiceImpl;
+import com.tvseries.TvSeriesManagementSystemBackend.dto.RegisterRequest;
+import com.tvseries.TvSeriesManagementSystemBackend.service.UserService;
+import com.tvseries.TvSeriesManagementSystemBackend.service.Impl.AuthServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,15 +26,23 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final AuthServiceImpl authServiceImpl;
+    private final UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        final UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(request.getUsername());
+        authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        final UserDetails userDetails = authServiceImpl.loadUserByUsername(request.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails.getUsername());
 
         return ResponseEntity.ok(new AuthResponse(jwt));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        userService.register(request);
+        return ResponseEntity.ok("User registered successfully");
     }
 
 }

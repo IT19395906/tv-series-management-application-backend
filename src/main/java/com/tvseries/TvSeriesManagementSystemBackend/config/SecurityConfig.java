@@ -9,6 +9,8 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -31,8 +33,8 @@ public class SecurityConfig {
         httpSecurity.cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 // .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()); // uncomment this to allow all requests without jwt authentication
-        .authorizeHttpRequests(auth ->auth.requestMatchers("/api/auth/**").permitAll().requestMatchers("/api/tvseries/getAll").permitAll().anyRequest().authenticated()) // comment this to disable jwt
-        .addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class); // comment this to disable jwt 
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll().requestMatchers("/api/tvseries/getAll").permitAll().anyRequest().authenticated()) // comment this to disable jwt
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // comment this to disable jwt
         return httpSecurity.build();
     }
 
@@ -53,5 +55,10 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
