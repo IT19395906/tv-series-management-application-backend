@@ -25,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/tvseries")
@@ -88,8 +89,15 @@ public class TvSeriesController {
 
     @DeleteMapping("delete/{id}")
     public ResponseEntity<CommonResponse<Void>> delete(@PathVariable Long id) {
-       service.deleteById(id);
+        service.deleteById(id);
         CommonResponse<Void> response = new CommonResponse<>("Successfully Deleted Tv series", null);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("update/{id}")
+    public ResponseEntity<CommonResponse<Void>> update(@PathVariable Long id, @Valid @RequestBody SubmitDto dto) {
+        service.update(id,dto);
+        CommonResponse<Void> response = new CommonResponse<>("TV Series Updated Successfully", null);
         return ResponseEntity.ok(response);
     }
 

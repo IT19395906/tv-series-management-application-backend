@@ -89,4 +89,26 @@ public class TvSeriesServiceImpl implements TvSeriesService {
         }
     }
 
+    @Override
+    public void update(Long id, SubmitDto dto) {
+
+        TvSeries existing = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Tv Series Not Found With Id" + id));
+        existing.setTitle(dto.getTitle());
+        existing.setDescription(dto.getDescription());
+        existing.setCategory(dto.getCategory());
+        existing.setLanguage(dto.getLanguage());
+        existing.setQuality(dto.getQuality());
+        existing.setFormat(dto.getFormat());
+        existing.setReleasedDate(dto.getReleasedDate());
+        existing.setImg(dto.getImg());
+        existing.setTags(dto.getTags());
+        existing.setImdb(dto.getImdb());
+        existing.setRo(dto.getRo());
+        existing.setStatus(dto.getStatus());
+        existing.setAddedDate(LocalDate.now().toString());
+        existing.setAddedBy("Admin");
+        repository.save(existing);
+    }
+
 }

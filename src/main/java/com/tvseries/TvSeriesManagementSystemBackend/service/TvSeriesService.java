@@ -22,4 +22,6 @@ public interface TvSeriesService {
 
     void deleteById(Long id);
 
+    void update(Long id, SubmitDto dto);
+
 }
