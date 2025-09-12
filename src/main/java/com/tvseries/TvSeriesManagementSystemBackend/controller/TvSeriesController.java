@@ -75,6 +75,11 @@ public class TvSeriesController {
     public Page<TvSeries> getAll(Pageable pageable) {
         return service.getAllSeries(pageable);
     }
+    
+    @GetMapping("latest")
+    public List<TvSeries> latest10() {
+        return service.latest10();
+    }
 
     @GetMapping("search")
     public List<TvSeries> searchByQuery(@RequestParam String keyword) {

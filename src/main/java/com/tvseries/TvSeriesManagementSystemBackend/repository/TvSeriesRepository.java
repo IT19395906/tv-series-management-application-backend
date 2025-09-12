@@ -33,4 +33,7 @@ public interface TvSeriesRepository extends JpaRepository<TvSeries, Long> {
         @Query("SELECT t FROM TvSeries t WHERE LOWER(t.title) LIKE LOWER(CONCAT('%', :keyword, '%'))")
         List<TvSeries> searchByQuery(@Param("keyword") String keyword);
 
+        
+        List<TvSeries> findTop10ByOrderByReleasedDateDesc();
+
 }

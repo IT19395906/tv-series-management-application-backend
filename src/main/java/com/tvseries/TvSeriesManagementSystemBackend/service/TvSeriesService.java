@@ -24,4 +24,6 @@ public interface TvSeriesService {
 
     void update(Long id, SubmitDto dto);
 
+    List<TvSeries> latest10();
+
 }

@@ -67,6 +67,11 @@ public class TvSeriesServiceImpl implements TvSeriesService {
             List<TvSeries> found = repository.searchByQuery(part);
             result.addAll(found);
         }
+
+        if (result.isEmpty()) {
+            throw new EntityNotFoundException("Search Record Not Found");
+        }
+
         return new ArrayList<>(result);
     }
 
@@ -109,6 +114,17 @@ public class TvSeriesServiceImpl implements TvSeriesService {
         existing.setAddedDate(LocalDate.now().toString());
         existing.setAddedBy("Admin");
         repository.save(existing);
+    }
+
+    @Override
+    public List<TvSeries> latest10() {
+        List<TvSeries> result = repository.findTop10ByOrderByReleasedDateDesc();
+        if (result.isEmpty()) {
+            throw new EntityNotFoundException("Tv Series Not Found");
+        }
+
+        return result;
+
     }
 
 }
