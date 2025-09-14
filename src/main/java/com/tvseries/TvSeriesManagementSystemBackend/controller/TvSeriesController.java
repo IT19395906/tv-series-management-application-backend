@@ -53,6 +53,11 @@ public class TvSeriesController {
                 "Korean", "Arabic", "Portuguese", "Russian", "Italian", "Turkish", "Dutch");
     }
 
+    @GetMapping("years")
+    public List<String> getAllYears() {
+        return service.getAllYears();
+    }
+
     @PostMapping("add")
     public ResponseEntity<CommonResponse<Void>> add(@Valid @RequestBody SubmitDto dto) {
         service.add(dto);
@@ -75,7 +80,7 @@ public class TvSeriesController {
     public Page<TvSeries> getAll(Pageable pageable) {
         return service.getAllSeries(pageable);
     }
-    
+
     @GetMapping("latest")
     public List<TvSeries> latest10() {
         return service.latest10();
@@ -101,7 +106,7 @@ public class TvSeriesController {
 
     @PutMapping("update/{id}")
     public ResponseEntity<CommonResponse<Void>> update(@PathVariable Long id, @Valid @RequestBody SubmitDto dto) {
-        service.update(id,dto);
+        service.update(id, dto);
         CommonResponse<Void> response = new CommonResponse<>("TV Series Updated Successfully", null);
         return ResponseEntity.ok(response);
     }

@@ -26,4 +26,6 @@ public interface TvSeriesService {
 
     List<TvSeries> latest10();
 
+    List<String> getAllYears();
+
 }

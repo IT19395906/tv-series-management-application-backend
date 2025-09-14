@@ -36,4 +36,6 @@ public interface TvSeriesRepository extends JpaRepository<TvSeries, Long> {
         
         List<TvSeries> findTop10ByOrderByReleasedDateDesc();
 
+        @Query("SELECT DISTINCT FUNCTION('YEAR', t.releasedDate) FROM TvSeries t ORDER BY FUNCTION('YEAR', t.releasedDate)")
+        List<Integer> findDistinctYears();
 }

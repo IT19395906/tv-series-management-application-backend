@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -125,6 +126,11 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
         return result;
 
+    }
+
+    @Override
+    public List<String> getAllYears() {
+        return repository.findDistinctYears().stream().map(String:: valueOf).collect(Collectors.toList());
     }
 
 }
