@@ -87,7 +87,7 @@ public class TvSeriesController {
     }
 
     @GetMapping("getByYear/{value}")
-    public List<TvSeries> getTvSeriesByYear(@PathVariable String value) {
+    public List<TvSeries> getTvSeriesByYear(@PathVariable int value) {
         return service.getTvSeriesByYear(value);
     }
 

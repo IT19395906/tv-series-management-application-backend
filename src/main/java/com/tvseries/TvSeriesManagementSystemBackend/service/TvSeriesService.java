@@ -32,7 +32,7 @@ public interface TvSeriesService {
 
     List<TvSeries> getTvSeriesByLanguage(String language);
 
-    List<TvSeries> getTvSeriesByYear(String year);
+    List<TvSeries> getTvSeriesByYear(int year);
 
     List<TvSeries> getTvSeriesByCollection(String collection);
 

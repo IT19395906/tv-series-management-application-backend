@@ -154,14 +154,13 @@ public class TvSeriesServiceImpl implements TvSeriesService {
     }
 
     @Override
-    public List<TvSeries> getTvSeriesByYear(String year) {
-         throw new UnsupportedOperationException("Unimplemented method 'getTvSeriesByYear'");
-        // List<TvSeries> result = repository.findByYear(year);
-        // if (result.isEmpty()) {
-        //     throw new EntityNotFoundException("Tv Series Not Found");
-        // }
+    public List<TvSeries> getTvSeriesByYear(int year) {
+        List<TvSeries> result = repository.findByYear(year);
+        if (result.isEmpty()) {
+            throw new EntityNotFoundException("Tv Series Not Found");
+        }
 
-        // return result;
+        return result;
     }
 
     @Override
