@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/tvseries")
-@CrossOrigin(origins = "*")
+// @CrossOrigin(origins = "*")
 public class TvSeriesController {
 
     @Autowired
@@ -74,6 +74,26 @@ public class TvSeriesController {
         }
         CommonResponse<List<TvSeries>> response = new CommonResponse<>("Successfully Found Data", res);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("getByCategory/{value}")
+    public List<TvSeries> getTvSeriesByCategory(@PathVariable String value) {
+        return service.getTvSeriesByCategory(value);
+    }
+
+    @GetMapping("getByLanguage/{value}")
+    public List<TvSeries> getTvSeriesByLanguage(@PathVariable String value) {
+        return service.getTvSeriesByLanguage(value);
+    }
+
+    @GetMapping("getByYear/{value}")
+    public List<TvSeries> getTvSeriesByYear(@PathVariable String value) {
+        return service.getTvSeriesByYear(value);
+    }
+
+    @GetMapping("getByCollection/{value}")
+    public List<TvSeries> getTvSeriesByCollection(@PathVariable String value) {
+        return service.getTvSeriesByCollection(value);
     }
 
     @GetMapping("getAll")

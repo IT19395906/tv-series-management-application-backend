@@ -28,4 +28,12 @@ public interface TvSeriesService {
 
     List<String> getAllYears();
 
+    List<TvSeries> getTvSeriesByCategory(String category);
+
+    List<TvSeries> getTvSeriesByLanguage(String language);
+
+    List<TvSeries> getTvSeriesByYear(String year);
+
+    List<TvSeries> getTvSeriesByCollection(String collection);
+
 }

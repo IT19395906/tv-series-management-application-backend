@@ -133,4 +133,26 @@ public class TvSeriesServiceImpl implements TvSeriesService {
         return repository.findDistinctYears().stream().map(String:: valueOf).collect(Collectors.toList());
     }
 
+    @Override
+    public List<TvSeries> getTvSeriesByCategory(String category) {
+        return repository.findByCategory(category);
+    }
+
+    @Override
+    public List<TvSeries> getTvSeriesByLanguage(String language) {
+        return repository.findByLanguage(language);
+    }
+
+    @Override
+    public List<TvSeries> getTvSeriesByYear(String year) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTvSeriesByYear'");
+    }
+
+    @Override
+    public List<TvSeries> getTvSeriesByCollection(String collection) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTvSeriesByCollection'");
+    }
+
 }
