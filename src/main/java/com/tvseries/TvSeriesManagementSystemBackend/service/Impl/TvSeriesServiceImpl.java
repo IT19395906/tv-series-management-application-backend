@@ -130,29 +130,49 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public List<String> getAllYears() {
-        return repository.findDistinctYears().stream().map(String:: valueOf).collect(Collectors.toList());
+        return repository.findDistinctYears().stream().map(String::valueOf).collect(Collectors.toList());
     }
 
     @Override
     public List<TvSeries> getTvSeriesByCategory(String category) {
-        return repository.findByCategory(category);
+        List<TvSeries> result = repository.findByCategory(category);
+        if (result.isEmpty()) {
+            throw new EntityNotFoundException("Tv Series Not Found");
+        }
+
+        return result;
     }
 
     @Override
     public List<TvSeries> getTvSeriesByLanguage(String language) {
-        return repository.findByLanguage(language);
+        List<TvSeries> result = repository.findByLanguage(language);
+        if (result.isEmpty()) {
+            throw new EntityNotFoundException("Tv Series Not Found");
+        }
+
+        return result;
     }
 
     @Override
     public List<TvSeries> getTvSeriesByYear(String year) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTvSeriesByYear'");
+         throw new UnsupportedOperationException("Unimplemented method 'getTvSeriesByYear'");
+        // List<TvSeries> result = repository.findByYear(year);
+        // if (result.isEmpty()) {
+        //     throw new EntityNotFoundException("Tv Series Not Found");
+        // }
+
+        // return result;
     }
 
     @Override
     public List<TvSeries> getTvSeriesByCollection(String collection) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTvSeriesByCollection'");
+         throw new UnsupportedOperationException("Unimplemented method 'getTvSeriesByCollection'");
+        // List<TvSeries> result = repository.findByCollection(collection);
+        // if (result.isEmpty()) {
+        //     throw new EntityNotFoundException("Tv Series Not Found");
+        // }
+
+        // return result;
     }
 
 }

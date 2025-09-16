@@ -40,6 +40,10 @@ public interface TvSeriesRepository extends JpaRepository<TvSeries, Long> {
 
         List<TvSeries> findByLanguage(String language);
 
+        // List<TvSeries> findByYear(String year);
+
+        // List<TvSeries> findByCollection(String collection);
+
         @Query("SELECT DISTINCT FUNCTION('YEAR', t.releasedDate) FROM TvSeries t ORDER BY FUNCTION('YEAR', t.releasedDate)")
         List<Integer> findDistinctYears();
 }
