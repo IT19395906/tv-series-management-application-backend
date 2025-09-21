@@ -111,6 +111,11 @@ public class TvSeriesController {
         return service.searchByQuery(keyword);
     }
 
+    @GetMapping("searchPage")
+    public Page<TvSeries> searchByQueryPage(@RequestParam String keyword, Pageable pageable) {
+        return service.searchByQueryPage(keyword, pageable);
+    }
+
     @GetMapping("getById/{id}")
     public ResponseEntity<TvSeries> getById(@PathVariable Long id) {
         TvSeries tvseries = service.getById(id);

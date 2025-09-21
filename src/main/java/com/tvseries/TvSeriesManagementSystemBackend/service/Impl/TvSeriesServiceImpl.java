@@ -77,6 +77,16 @@ public class TvSeriesServiceImpl implements TvSeriesService {
     }
 
     @Override
+    public Page<TvSeries> searchByQueryPage(String keyword, Pageable pageable) {
+        Page<TvSeries> result = repository.searchByQueryPage(keyword, pageable);
+
+        if(result.isEmpty()){
+            throw new EntityNotFoundException("Search Record Not Found");
+        }
+        return result;
+    }
+
+    @Override
     public TvSeries getById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Tv Series Not Found With Id" + id));
@@ -165,10 +175,10 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public List<TvSeries> getTvSeriesByCollection(String collection) {
-         throw new UnsupportedOperationException("Unimplemented method 'getTvSeriesByCollection'");
+        throw new UnsupportedOperationException("Unimplemented method 'getTvSeriesByCollection'");
         // List<TvSeries> result = repository.findByCollection(collection);
         // if (result.isEmpty()) {
-        //     throw new EntityNotFoundException("Tv Series Not Found");
+        // throw new EntityNotFoundException("Tv Series Not Found");
         // }
 
         // return result;

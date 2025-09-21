@@ -3,6 +3,8 @@ package com.tvseries.TvSeriesManagementSystemBackend.repository;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,8 +17,10 @@ public interface TvSeriesRepository extends JpaRepository<TvSeries, Long> {
 
         @Query("SELECT t FROM TvSeries t WHERE " +
                         "(:title IS NULL OR :title = '' OR LOWER(t.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND " +
-                        "(:category IS NULL OR :category = '' OR LOWER(t.category) LIKE LOWER(CONCAT('%', :category, '%'))) AND " +
-                        "(:quality IS NULL OR :quality = '' OR LOWER(t.quality) LIKE LOWER(CONCAT('%', :quality, '%'))) AND " +
+                        "(:category IS NULL OR :category = '' OR LOWER(t.category) LIKE LOWER(CONCAT('%', :category, '%'))) AND "
+                        +
+                        "(:quality IS NULL OR :quality = '' OR LOWER(t.quality) LIKE LOWER(CONCAT('%', :quality, '%'))) AND "
+                        +
                         "(:releasedDateFrom IS NULL OR t.releasedDate >= :releasedDateFrom) AND " +
                         "(:releasedDateTo IS NULL OR t.releasedDate <= :releasedDateTo) AND " +
                         "(:addedDateFrom IS NULL OR :addedDateFrom = '' OR t.addedDate >= :addedDateFrom) AND " +
@@ -33,7 +37,9 @@ public interface TvSeriesRepository extends JpaRepository<TvSeries, Long> {
         @Query("SELECT t FROM TvSeries t WHERE LOWER(t.title) LIKE LOWER(CONCAT('%', :keyword, '%'))")
         List<TvSeries> searchByQuery(@Param("keyword") String keyword);
 
-        
+        @Query("SELECT t FROM TvSeries t WHERE LOWER(t.title) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+        Page<TvSeries> searchByQueryPage(@Param("keyword") String keyword, Pageable pageable);
+
         List<TvSeries> findTop10ByOrderByReleasedDateDesc();
 
         List<TvSeries> findByCategory(String category);

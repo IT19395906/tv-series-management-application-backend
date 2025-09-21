@@ -18,6 +18,8 @@ public interface TvSeriesService {
 
     List<TvSeries> searchByQuery(String keyword);
 
+    Page<TvSeries> searchByQueryPage(String keyword,Pageable pageable);
+
     TvSeries getById(Long id);
 
     void deleteById(Long id);
