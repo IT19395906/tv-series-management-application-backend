@@ -19,8 +19,12 @@ import com.tvseries.TvSeriesManagementSystemBackend.repository.TvSeriesRepositor
 import com.tvseries.TvSeriesManagementSystemBackend.service.TvSeriesService;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Autowired
@@ -28,6 +32,7 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public TvSeries add(SubmitDto dto) {
+        log.info("Adding new TV series: {}", dto.getTitle());
         TvSeries series = new TvSeries();
         series.setTitle(dto.getTitle());
         series.setDescription(dto.getDescription());
@@ -51,17 +56,21 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public List<TvSeries> get(SearchDto dto) {
+        log.info("Searching TV series with filters: {}", dto);
         return repository.search(dto.getTitle(), dto.getCategory(), dto.getQuality(), dto.getReleasedDateFrom(),
                 dto.getReleasedDateTo(), dto.getAddedDateFrom(), dto.getAddedDateTo());
     }
 
     @Override
     public Page<TvSeries> getAllSeries(Pageable pageable) {
+        log.info("Fetching all TV series (paged) — Page: {}, Size: {}", pageable.getPageNumber(),
+                pageable.getPageSize());
         return repository.findAll(pageable);
     }
 
     @Override
     public List<TvSeries> searchByQuery(String keyword) {
+        log.info("Searching TV series by query: '{}'", keyword);
         String[] keywords = keyword.toLowerCase().split("\\s+");
         Set<TvSeries> result = new HashSet<>();
         for (String part : keywords) {
@@ -78,9 +87,10 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public Page<TvSeries> searchByQueryPage(String keyword, Pageable pageable) {
+        log.info("Searching (paged) TV series by query: '{}'", keyword);
         Page<TvSeries> result = repository.searchByQueryPage(keyword, pageable);
 
-        if(result.isEmpty()){
+        if (result.isEmpty()) {
             throw new EntityNotFoundException("Search Record Not Found");
         }
         return result;
@@ -88,12 +98,14 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public TvSeries getById(Long id) {
+        log.info("Fetching TV series by ID: {}", id);
         return repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Tv Series Not Found With Id" + id));
     }
 
     @Override
     public void deleteById(Long id) {
+        log.info("Deleting TV series by ID: {}", id);
         if (!repository.existsById(id)) {
             throw new EntityNotFoundException("Tv Series Not Found With Id" + id);
         }
@@ -107,6 +119,7 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public void update(Long id, SubmitDto dto) {
+        log.info("Updating TV series with ID: {}", id);
 
         TvSeries existing = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Tv Series Not Found With Id" + id));
@@ -129,6 +142,7 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public List<TvSeries> latest10() {
+        log.info("Fetching latest 10 TV series");
         List<TvSeries> result = repository.findTop10ByOrderByReleasedDateDesc();
         if (result.isEmpty()) {
             throw new EntityNotFoundException("Tv Series Not Found");
@@ -140,11 +154,13 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public List<String> getAllYears() {
+        log.info("Fetching all release years");
         return repository.findDistinctYears().stream().map(String::valueOf).collect(Collectors.toList());
     }
 
     @Override
     public List<TvSeries> getTvSeriesByCategory(String category) {
+        log.info("Fetching TV series by category: {}", category);
         List<TvSeries> result = repository.findByCategory(category);
         if (result.isEmpty()) {
             throw new EntityNotFoundException("Tv Series Not Found");
@@ -155,6 +171,7 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public List<TvSeries> getTvSeriesByLanguage(String language) {
+        log.info("Fetching TV series by language: {}", language);
         List<TvSeries> result = repository.findByLanguage(language);
         if (result.isEmpty()) {
             throw new EntityNotFoundException("Tv Series Not Found");
@@ -165,6 +182,7 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public List<TvSeries> getTvSeriesByYear(int year) {
+        log.info("Fetching TV series by release year: {}", year);
         List<TvSeries> result = repository.findByYear(year);
         if (result.isEmpty()) {
             throw new EntityNotFoundException("Tv Series Not Found");
