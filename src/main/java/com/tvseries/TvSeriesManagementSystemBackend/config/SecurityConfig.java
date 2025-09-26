@@ -34,8 +34,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 // .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()); // uncomment this to allow all requests without jwt authentication
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()      // comment this to disable jwt
-                .requestMatchers("/api/tvseries/getAll").permitAll()       // comment this to disable jwt
-                //.requestMatchers("/swagger-ui/**","/v3/api-docs/**","/swagger-ui.html","/swagger-resources/**","/webjars/**").permitAll()      // comment this to disable jwt
+                .requestMatchers("/api/tvseries/getAll","/swagger-ui/**","/v3/api-docs/**","/swagger-ui.html","/swagger-resources/**","/webjars/**").permitAll()       // comment this to disable jwt
                 .anyRequest().authenticated()) 
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // comment this to disable jwt
         return httpSecurity.build();
