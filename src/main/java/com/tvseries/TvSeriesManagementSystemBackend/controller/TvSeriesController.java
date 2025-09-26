@@ -19,6 +19,7 @@ import com.tvseries.TvSeriesManagementSystemBackend.dto.SubmitDto;
 import com.tvseries.TvSeriesManagementSystemBackend.entity.TvSeries;
 import com.tvseries.TvSeriesManagementSystemBackend.service.TvSeriesService;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -135,5 +136,11 @@ public class TvSeriesController {
         CommonResponse<Void> response = new CommonResponse<>("TV Series Updated Successfully", null);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/export/csv")
+    public void exportToCsv(HttpServletResponse response) {
+      service.exportToCsv(response);
+    }
+    
 
 }

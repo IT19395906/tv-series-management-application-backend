@@ -9,6 +9,8 @@ import com.tvseries.TvSeriesManagementSystemBackend.dto.SearchDto;
 import com.tvseries.TvSeriesManagementSystemBackend.dto.SubmitDto;
 import com.tvseries.TvSeriesManagementSystemBackend.entity.TvSeries;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 public interface TvSeriesService {
     TvSeries add(SubmitDto dto);
 
@@ -37,5 +39,7 @@ public interface TvSeriesService {
     List<TvSeries> getTvSeriesByYear(int year);
 
     List<TvSeries> getTvSeriesByCollection(String collection);
+
+    void exportToCsv(HttpServletResponse response);
 
 }

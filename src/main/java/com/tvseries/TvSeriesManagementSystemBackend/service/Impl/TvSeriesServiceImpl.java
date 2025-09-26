@@ -1,9 +1,12 @@
 package com.tvseries.TvSeriesManagementSystemBackend.service.Impl;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,6 +22,7 @@ import com.tvseries.TvSeriesManagementSystemBackend.repository.TvSeriesRepositor
 import com.tvseries.TvSeriesManagementSystemBackend.service.TvSeriesService;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -200,6 +204,55 @@ public class TvSeriesServiceImpl implements TvSeriesService {
         // }
 
         // return result;
+    }
+
+    @Override
+    public void exportToCsv(HttpServletResponse response) {
+        try {
+            response.setContentType("text/csv; charset=UTF-8");
+            response.setHeader("Content-Disposition", "attachment; filename=\"list.csv\"");
+            PrintWriter writer = response.getWriter();
+            writer.println(
+                    "Id,Title,Category,Language,Quality,Format,ReleasedDate,Description,Seasons,Episodes,AddedDate,AddedBy,IMDB,RottenTomatoes");
+            List<TvSeries> list = getAllSeriesAsList();
+            for (TvSeries tvSeries : list) {
+                writer.println(String.format(Locale.ROOT, "%d,%s,%s,%s,%s,%s,%s,%s,%d,%d,%s,%s,%.1f,%d",
+                        tvSeries.getId(),
+                        escapeCsv(tvSeries.getTitle()),
+                        escapeCsv(tvSeries.getCategory()),
+                        escapeCsv(tvSeries.getLanguage()),
+                        escapeCsv(tvSeries.getQuality()),
+                        escapeCsv(tvSeries.getFormat()),
+                        tvSeries.getReleasedDate(),
+                        escapeCsv(tvSeries.getDescription()),
+                        tvSeries.getSeasons(),
+                        tvSeries.getEpisodes(),
+                        tvSeries.getAddedDate(),
+                        escapeCsv(tvSeries.getAddedBy()),
+                        tvSeries.getImdb(),
+                        tvSeries.getRo()));
+            }
+            writer.flush();
+        } catch (IOException ex) {
+            log.error("Export Failed {}", ex);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public List<TvSeries> getAllSeriesAsList() {
+        log.info("Fetching all TV series (list)");
+        return repository.findAll();
+    }
+
+    private String escapeCsv(String field) {
+        if (field == null)
+            return "";
+        boolean mustQuote = field.contains(",") || field.contains("\"") || field.contains("\n");
+        if (mustQuote) {
+            field = field.replace("\"", "\"\"");
+            return "\"" + field + "\"";
+        }
+        return field;
     }
 
 }
