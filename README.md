@@ -20,6 +20,10 @@ This is the **backend API** for the **TV Series Management System**, built using
 - Filter/search TV series with multiple filters  
 - Update existing TV series data  
 - Delete TV series from the system
+- **Download TV series data**:
+  - Download **all TV series** as **CSV** file  
+  - Download **TV series** as **PDF** file  
+  - Download **TV series** as **ZIP** file containing CSV and PDF files
 
 #### 🔹 Normal User
 - View all available TV series  
@@ -45,6 +49,10 @@ This is the **backend API** for the **TV Series Management System**, built using
 - **Pagination & Sorting** for API responses
 - **ModelMapper** (if used) for DTO/entity conversions
 - **Spring Data JPA**
+- **Apache POI** for CSV generation  
+- **OpenPDF** for PDF generation  
+- **Java Zip Libraries** for ZIP file creation
+- **Swagger** for API documentation and testing
 
 ---
 ## 🚀 Getting Started
