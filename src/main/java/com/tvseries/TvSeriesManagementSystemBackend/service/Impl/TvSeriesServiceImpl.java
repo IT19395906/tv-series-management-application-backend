@@ -15,6 +15,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Font;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfWriter;
 import com.tvseries.TvSeriesManagementSystemBackend.dto.SearchDto;
 import com.tvseries.TvSeriesManagementSystemBackend.dto.SubmitDto;
 import com.tvseries.TvSeriesManagementSystemBackend.entity.TvSeries;
@@ -209,12 +215,14 @@ public class TvSeriesServiceImpl implements TvSeriesService {
     @Override
     public void exportToCsv(HttpServletResponse response) {
         try {
+            log.info("Starting export of TV series to CSV");
             response.setContentType("text/csv; charset=UTF-8");
             response.setHeader("Content-Disposition", "attachment; filename=\"list.csv\"");
             PrintWriter writer = response.getWriter();
             writer.println(
                     "Id,Title,Category,Language,Quality,Format,ReleasedDate,Description,Seasons,Episodes,AddedDate,AddedBy,IMDB,RottenTomatoes");
             List<TvSeries> list = getAllSeriesAsList();
+            log.info("Fetched {} TV series to export", list.size());
             for (TvSeries tvSeries : list) {
                 writer.println(String.format(Locale.ROOT, "%d,%s,%s,%s,%s,%s,%s,%s,%d,%d,%s,%s,%.1f,%d",
                         tvSeries.getId(),
@@ -233,8 +241,9 @@ public class TvSeriesServiceImpl implements TvSeriesService {
                         tvSeries.getRo()));
             }
             writer.flush();
+            log.info("TV series CSV export completed successfully");
         } catch (IOException ex) {
-            log.error("Export Failed {}", ex);
+            log.error("CSV export failed due to I/O error: {}", ex);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
@@ -253,6 +262,52 @@ public class TvSeriesServiceImpl implements TvSeriesService {
             return "\"" + field + "\"";
         }
         return field;
+    }
+
+    @Override
+    public void exportToPdf(HttpServletResponse response) {
+        try {
+
+            log.info("Starting export of TV series to PDF");
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", "attachment; filename=list.pdf");
+            Document document = new Document(PageSize.A4);
+            PdfWriter.getInstance(document, response.getOutputStream());
+            document.open();
+            Font font = new Font(Font.HELVETICA, 16, Font.BOLD);
+            Paragraph title = new Paragraph("Tv Series List", font);
+            title.setAlignment(Paragraph.ALIGN_CENTER);
+            document.add(title);
+            document.add(new Paragraph("\n"));
+            Font contentFont = new Font(Font.HELVETICA, 12);
+            List<TvSeries> list = getAllSeriesAsList();
+            log.info("Fetched {} TV series to export", list.size());
+            for (TvSeries tvSeries : list) {
+                Paragraph paragraph = new Paragraph(
+                        "Id: " + tvSeries.getId() +
+                                "\nTitle: " + tvSeries.getTitle() +
+                                "\nCategory: " + tvSeries.getCategory() +
+                                "\nLanguage: " + tvSeries.getLanguage() +
+                                "\nReleasedDate: " + tvSeries.getReleasedDate() +
+                                "\nQuality: " + tvSeries.getQuality() +
+                                "\nFormat: " + tvSeries.getFormat() +
+                                "\nSeasons: " + tvSeries.getSeasons() +
+                                "\nEpisodes: " + tvSeries.getEpisodes() +
+                                "\nAddedDate: " + tvSeries.getAddedDate() +
+                                "\nAddedBy: " + tvSeries.getAddedBy() +
+                                "\nIMDB: " + tvSeries.getImdb() +
+                                "\nRottenTomatoes: " + tvSeries.getRo() +
+                                "\n",
+                        contentFont);
+                document.add(paragraph);
+                document.add(new Paragraph("\n"));
+            }
+            document.close();
+            log.info("TV series PDF export completed successfully");
+        } catch (IOException | DocumentException ex) {
+            log.error("PDF export failed due to error: {}", ex);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

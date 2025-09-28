@@ -141,6 +141,12 @@ public class TvSeriesController {
     public void exportToCsv(HttpServletResponse response) {
       service.exportToCsv(response);
     }
+
+    @GetMapping("/export/pdf")
+    public void exportToPdf(HttpServletResponse response) {
+        service.exportToPdf(response);
+    }
+    
     
 
 }
