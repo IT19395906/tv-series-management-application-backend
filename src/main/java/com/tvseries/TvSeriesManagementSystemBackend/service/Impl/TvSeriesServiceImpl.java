@@ -1,7 +1,9 @@
 package com.tvseries.TvSeriesManagementSystemBackend.service.Impl;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,6 +11,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -308,6 +312,96 @@ public class TvSeriesServiceImpl implements TvSeriesService {
             log.error("PDF export failed due to error: {}", ex);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Override
+    public void exportToZip(HttpServletResponse response) {
+        try {
+            log.info("Starting ZIP export of TV series");
+            response.setContentType("application/zip");
+            response.setHeader("Content-Disposition", "attachment; filename=list.zip");
+            ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
+
+            zipOutputStream.putNextEntry(new ZipEntry("Tv Series List.csv"));
+            String contentCsv = getCsvContent();
+            zipOutputStream.write(contentCsv.getBytes(StandardCharsets.UTF_8));
+            zipOutputStream.closeEntry();
+
+            zipOutputStream.putNextEntry(new ZipEntry("Tv Series List.pdf"));
+            byte[] contentPdf = getPdfContent();
+            zipOutputStream.write(contentPdf);
+            zipOutputStream.closeEntry();
+
+            zipOutputStream.finish();
+            log.info("ZIP export completed successfully");
+        } catch (IOException | DocumentException ex) {
+            log.error("ZIP export failed: {}", ex);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private String getCsvContent() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(
+                "Id,Title,Category,Language,Quality,Format,ReleasedDate,Description,Seasons,Episodes,AddedDate,AddedBy,IMDB,RottenTomatoes\n");
+        List<TvSeries> list = getAllSeriesAsList();
+        log.info("Fetched {} TV series to export", list.size());
+        for (TvSeries tvSeries : list) {
+            sb.append(String.format(Locale.ROOT, "%d,%s,%s,%s,%s,%s,%s,%s,%d,%d,%s,%s,%.1f,%d\n",
+                    tvSeries.getId(),
+                    escapeCsv(tvSeries.getTitle()),
+                    escapeCsv(tvSeries.getCategory()),
+                    escapeCsv(tvSeries.getLanguage()),
+                    escapeCsv(tvSeries.getQuality()),
+                    escapeCsv(tvSeries.getFormat()),
+                    tvSeries.getReleasedDate(),
+                    escapeCsv(tvSeries.getDescription()),
+                    tvSeries.getSeasons(),
+                    tvSeries.getEpisodes(),
+                    tvSeries.getAddedDate(),
+                    escapeCsv(tvSeries.getAddedBy()),
+                    tvSeries.getImdb(),
+                    tvSeries.getRo()));
+        }
+        return sb.toString();
+
+    }
+
+    private byte[] getPdfContent(){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+         Document document = new Document(PageSize.A4);
+            PdfWriter.getInstance(document, byteArrayOutputStream);
+            document.open();
+            Font font = new Font(Font.HELVETICA, 16, Font.BOLD);
+            Paragraph title = new Paragraph("Tv Series List", font);
+            title.setAlignment(Paragraph.ALIGN_CENTER);
+            document.add(title);
+            document.add(new Paragraph("\n"));
+            Font contentFont = new Font(Font.HELVETICA, 12);
+            List<TvSeries> list = getAllSeriesAsList();
+            log.info("Fetched {} TV series to export", list.size());
+            for (TvSeries tvSeries : list) {
+                Paragraph paragraph = new Paragraph(
+                        "Id: " + tvSeries.getId() +
+                                "\nTitle: " + tvSeries.getTitle() +
+                                "\nCategory: " + tvSeries.getCategory() +
+                                "\nLanguage: " + tvSeries.getLanguage() +
+                                "\nReleasedDate: " + tvSeries.getReleasedDate() +
+                                "\nQuality: " + tvSeries.getQuality() +
+                                "\nFormat: " + tvSeries.getFormat() +
+                                "\nSeasons: " + tvSeries.getSeasons() +
+                                "\nEpisodes: " + tvSeries.getEpisodes() +
+                                "\nAddedDate: " + tvSeries.getAddedDate() +
+                                "\nAddedBy: " + tvSeries.getAddedBy() +
+                                "\nIMDB: " + tvSeries.getImdb() +
+                                "\nRottenTomatoes: " + tvSeries.getRo() +
+                                "\n",
+                        contentFont);
+                document.add(paragraph);
+                document.add(new Paragraph("\n"));
+            }
+            document.close();
+            return byteArrayOutputStream.toByteArray();
     }
 
 }

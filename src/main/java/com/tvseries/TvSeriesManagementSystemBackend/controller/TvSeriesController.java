@@ -139,14 +139,17 @@ public class TvSeriesController {
 
     @GetMapping("/export/csv")
     public void exportToCsv(HttpServletResponse response) {
-      service.exportToCsv(response);
+        service.exportToCsv(response);
     }
 
     @GetMapping("/export/pdf")
     public void exportToPdf(HttpServletResponse response) {
         service.exportToPdf(response);
     }
-    
-    
+
+    @GetMapping("/export/zip")
+    public void exportToZip(HttpServletResponse response) {
+        service.exportToZip(response);
+    }
 
 }

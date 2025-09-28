@@ -44,4 +44,6 @@ public interface TvSeriesService {
 
     void exportToPdf(HttpServletResponse response);
 
+    void exportToZip(HttpServletResponse response);
+
 }
