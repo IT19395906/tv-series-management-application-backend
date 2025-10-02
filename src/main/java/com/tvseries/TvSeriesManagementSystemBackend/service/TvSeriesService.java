@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tvseries.TvSeriesManagementSystemBackend.dto.SearchDto;
 import com.tvseries.TvSeriesManagementSystemBackend.dto.SubmitDto;
@@ -45,5 +46,7 @@ public interface TvSeriesService {
     void exportToPdf(HttpServletResponse response);
 
     void exportToZip(HttpServletResponse response);
+
+    String saveFile(MultipartFile file);
 
 }

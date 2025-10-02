@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tvseries.TvSeriesManagementSystemBackend.common.CommonResponse;
 import com.tvseries.TvSeriesManagementSystemBackend.dto.SearchDto;
@@ -151,5 +152,13 @@ public class TvSeriesController {
     public void exportToZip(HttpServletResponse response) {
         service.exportToZip(response);
     }
+
+    @PostMapping("/upload")
+    public ResponseEntity<CommonResponse<String>> uploadFile(@RequestParam("file") MultipartFile file) {
+        String filePath = service.saveFile(file);
+        CommonResponse<String> response = new CommonResponse<>("File Uploaded Successfully", filePath);
+        return ResponseEntity.ok(response);
+    }
+    
 
 }

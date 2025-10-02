@@ -1,11 +1,13 @@
 package com.tvseries.TvSeriesManagementSystemBackend.service.Impl;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -14,10 +16,13 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -43,6 +48,9 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Autowired
     TvSeriesRepository repository;
+
+    @Value("${file.upload-dir}")
+    private String uploadDirPath;
 
     @Override
     public TvSeries add(SubmitDto dto) {
@@ -367,41 +375,67 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     }
 
-    private byte[] getPdfContent(){
+    private byte[] getPdfContent() {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-         Document document = new Document(PageSize.A4);
-            PdfWriter.getInstance(document, byteArrayOutputStream);
-            document.open();
-            Font font = new Font(Font.HELVETICA, 16, Font.BOLD);
-            Paragraph title = new Paragraph("Tv Series List", font);
-            title.setAlignment(Paragraph.ALIGN_CENTER);
-            document.add(title);
+        Document document = new Document(PageSize.A4);
+        PdfWriter.getInstance(document, byteArrayOutputStream);
+        document.open();
+        Font font = new Font(Font.HELVETICA, 16, Font.BOLD);
+        Paragraph title = new Paragraph("Tv Series List", font);
+        title.setAlignment(Paragraph.ALIGN_CENTER);
+        document.add(title);
+        document.add(new Paragraph("\n"));
+        Font contentFont = new Font(Font.HELVETICA, 12);
+        List<TvSeries> list = getAllSeriesAsList();
+        log.info("Fetched {} TV series to export", list.size());
+        for (TvSeries tvSeries : list) {
+            Paragraph paragraph = new Paragraph(
+                    "Id: " + tvSeries.getId() +
+                            "\nTitle: " + tvSeries.getTitle() +
+                            "\nCategory: " + tvSeries.getCategory() +
+                            "\nLanguage: " + tvSeries.getLanguage() +
+                            "\nReleasedDate: " + tvSeries.getReleasedDate() +
+                            "\nQuality: " + tvSeries.getQuality() +
+                            "\nFormat: " + tvSeries.getFormat() +
+                            "\nSeasons: " + tvSeries.getSeasons() +
+                            "\nEpisodes: " + tvSeries.getEpisodes() +
+                            "\nAddedDate: " + tvSeries.getAddedDate() +
+                            "\nAddedBy: " + tvSeries.getAddedBy() +
+                            "\nIMDB: " + tvSeries.getImdb() +
+                            "\nRottenTomatoes: " + tvSeries.getRo() +
+                            "\n",
+                    contentFont);
+            document.add(paragraph);
             document.add(new Paragraph("\n"));
-            Font contentFont = new Font(Font.HELVETICA, 12);
-            List<TvSeries> list = getAllSeriesAsList();
-            log.info("Fetched {} TV series to export", list.size());
-            for (TvSeries tvSeries : list) {
-                Paragraph paragraph = new Paragraph(
-                        "Id: " + tvSeries.getId() +
-                                "\nTitle: " + tvSeries.getTitle() +
-                                "\nCategory: " + tvSeries.getCategory() +
-                                "\nLanguage: " + tvSeries.getLanguage() +
-                                "\nReleasedDate: " + tvSeries.getReleasedDate() +
-                                "\nQuality: " + tvSeries.getQuality() +
-                                "\nFormat: " + tvSeries.getFormat() +
-                                "\nSeasons: " + tvSeries.getSeasons() +
-                                "\nEpisodes: " + tvSeries.getEpisodes() +
-                                "\nAddedDate: " + tvSeries.getAddedDate() +
-                                "\nAddedBy: " + tvSeries.getAddedBy() +
-                                "\nIMDB: " + tvSeries.getImdb() +
-                                "\nRottenTomatoes: " + tvSeries.getRo() +
-                                "\n",
-                        contentFont);
-                document.add(paragraph);
-                document.add(new Paragraph("\n"));
+        }
+        document.close();
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    @Override
+    public String saveFile(MultipartFile file) {
+        try {
+
+            File uploadDir = new File(uploadDirPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
             }
-            document.close();
-            return byteArrayOutputStream.toByteArray();
+
+            List<String> allowedMimeTypes = Arrays.asList("video/mp4", "video/avi");
+            String mimeType = file.getContentType();
+            if (!allowedMimeTypes.contains(mimeType)) {
+                throw new FileUploadException("Invalid file type");
+            }
+
+            String targetPath = uploadDirPath + File.separator + file.getOriginalFilename();
+            File targetFile = new File(targetPath);
+            file.transferTo(targetFile);
+
+            return targetPath;
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error Occured Uploading", e);
+        }
     }
 
 }
