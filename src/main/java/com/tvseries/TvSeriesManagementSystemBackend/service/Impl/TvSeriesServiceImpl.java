@@ -29,6 +29,7 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Font;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.tvseries.TvSeriesManagementSystemBackend.dto.SearchDto;
 import com.tvseries.TvSeriesManagementSystemBackend.dto.SubmitDto;
@@ -314,6 +315,39 @@ public class TvSeriesServiceImpl implements TvSeriesService {
                 document.add(paragraph);
                 document.add(new Paragraph("\n"));
             }
+
+            PdfPTable table = new PdfPTable(13);
+            table.setWidthPercentage(100);
+            table.addCell("Id");
+            table.addCell("Title");
+            table.addCell("Category");
+            table.addCell("Language");
+            table.addCell("Quality");
+            table.addCell("Format");
+            table.addCell("ReleasedDate");
+            table.addCell("Seasons");
+            table.addCell("Episodes");
+            table.addCell("AddedDate");
+            table.addCell("AddedBy");
+            table.addCell("IMDB");
+            table.addCell("RottenTomatoes");
+
+            for (TvSeries tvSeries : list) {
+                table.addCell(String.valueOf(tvSeries.getId()));
+                table.addCell(tvSeries.getTitle());
+                table.addCell(tvSeries.getCategory());
+                table.addCell(tvSeries.getLanguage());
+                table.addCell(tvSeries.getQuality());
+                table.addCell(tvSeries.getFormat());
+                table.addCell(String.valueOf(tvSeries.getReleasedDate()));
+                table.addCell(String.valueOf(tvSeries.getSeasons()));
+                table.addCell(String.valueOf(tvSeries.getEpisodes()));
+                table.addCell(tvSeries.getAddedDate());
+                table.addCell(tvSeries.getAddedBy());
+                table.addCell(String.valueOf(tvSeries.getImdb()));
+                table.addCell(String.valueOf(tvSeries.getRo()));
+            }
+            document.add(table);
             document.close();
             log.info("TV series PDF export completed successfully");
         } catch (IOException | DocumentException ex) {
