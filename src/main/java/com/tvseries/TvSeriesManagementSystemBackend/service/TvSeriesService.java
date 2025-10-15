@@ -51,4 +51,6 @@ public interface TvSeriesService {
 
     void patch(Long id, SubmitDto dto);
 
+    void addRequest(String fname, String lname, String email, String contact, String content, MultipartFile file);
+
 }

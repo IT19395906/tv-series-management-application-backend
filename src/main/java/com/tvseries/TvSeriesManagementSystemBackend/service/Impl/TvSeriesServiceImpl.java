@@ -34,6 +34,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import com.tvseries.TvSeriesManagementSystemBackend.dto.SearchDto;
 import com.tvseries.TvSeriesManagementSystemBackend.dto.SubmitDto;
 import com.tvseries.TvSeriesManagementSystemBackend.entity.TvSeries;
+import com.tvseries.TvSeriesManagementSystemBackend.entity.UserRequest;
 import com.tvseries.TvSeriesManagementSystemBackend.repository.TvSeriesRepository;
 import com.tvseries.TvSeriesManagementSystemBackend.service.TvSeriesService;
 
@@ -478,21 +479,37 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
         TvSeries existing = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Tv Series Not Found With Id" + id));
-                existing.setTitle(dto.getTitle());
-                existing.setDescription(dto.getDescription());
-                existing.setCategory(dto.getCategory());
-                existing.setLanguage(dto.getLanguage());
-                existing.setQuality(dto.getQuality());
-                existing.setFormat(dto.getFormat());
-                existing.setReleasedDate(dto.getReleasedDate());
-                existing.setSeasons(dto.getSeasons());
-                existing.setEpisodes(dto.getEpisodes());
-                existing.setTrailer(dto.getTrailer());
-                existing.setTags(dto.getTags());
-                existing.setImdb(dto.getImdb());
-                existing.setRo(dto.getRo());
-                existing.setStatus(dto.getStatus());
-                repository.save(existing);
+        existing.setTitle(dto.getTitle());
+        existing.setDescription(dto.getDescription());
+        existing.setCategory(dto.getCategory());
+        existing.setLanguage(dto.getLanguage());
+        existing.setQuality(dto.getQuality());
+        existing.setFormat(dto.getFormat());
+        existing.setReleasedDate(dto.getReleasedDate());
+        existing.setSeasons(dto.getSeasons());
+        existing.setEpisodes(dto.getEpisodes());
+        existing.setTrailer(dto.getTrailer());
+        existing.setTags(dto.getTags());
+        existing.setImdb(dto.getImdb());
+        existing.setRo(dto.getRo());
+        existing.setStatus(dto.getStatus());
+        repository.save(existing);
+    }
+
+    @Override
+    public void addRequest(String fname, String lname, String email, String contact, String content,
+            MultipartFile file) {
+
+        log.info("Adding user request: {}", fname);
+        UserRequest userRequest = new UserRequest();
+        userRequest.setFname(fname);
+        userRequest.setLname(lname);
+        userRequest.setEmail(email);
+        userRequest.setContact(contact);
+        userRequest.setContent(content);
+        if (file != null && !file.isEmpty()) {
+            
+        }
     }
 
 }
