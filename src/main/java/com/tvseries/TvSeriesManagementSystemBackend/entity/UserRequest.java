@@ -1,7 +1,5 @@
 package com.tvseries.TvSeriesManagementSystemBackend.entity;
 
-import java.io.File;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,5 +33,7 @@ public class UserRequest {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    private File file;
+    private String filePath;
+
+    private String addedDate;
 }
