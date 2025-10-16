@@ -52,6 +52,7 @@ public class TvSeriesServiceImpl implements TvSeriesService {
     @Autowired
     TvSeriesRepository repository;
 
+    @Autowired
     UserRequestRepository requestRepository;
 
     @Value("${file.upload-dir}")

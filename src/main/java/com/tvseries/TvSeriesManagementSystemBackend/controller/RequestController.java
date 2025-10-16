@@ -14,7 +14,7 @@ import com.tvseries.TvSeriesManagementSystemBackend.service.TvSeriesService;
 @RestController
 @RequestMapping("/api/requests")
 public class RequestController {
-    
+
     @Autowired
     private TvSeriesService service;
 
@@ -25,7 +25,7 @@ public class RequestController {
             @RequestParam("email") String email,
             @RequestParam("contact") String contact,
             @RequestParam("content") String content,
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam(value = "file", required = false) MultipartFile file) {
         service.addRequest(fname, lname, email, contact, content, file);
         CommonResponse<Void> response = new CommonResponse<>("Request Sent Successfully", null);
         return ResponseEntity.ok(response);
