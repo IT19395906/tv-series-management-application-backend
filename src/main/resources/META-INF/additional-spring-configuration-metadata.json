@@ -13,5 +13,15 @@
     "name": "file.upload-dir",
     "type": "java.lang.String",
     "description": "A description for 'file.upload-dir'"
+  },
+  {
+    "name": "twilio.authToken",
+    "type": "java.lang.String",
+    "description": "A description for 'twilio.authToken'"
+  },
+  {
+    "name": "twilio.accountPhoneNumber",
+    "type": "java.lang.String",
+    "description": "A description for 'twilio.accountPhoneNumber'"
   }
 ]}
