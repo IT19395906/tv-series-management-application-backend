@@ -569,7 +569,6 @@ public class TvSeriesServiceImpl implements TvSeriesService {
         smsService.sendSms("+94 75 633 6141", message);
 
         log.info("Sent sms to admin {}", "+94 75 633 6141");
-        //i won cheating
     }
 
 }
