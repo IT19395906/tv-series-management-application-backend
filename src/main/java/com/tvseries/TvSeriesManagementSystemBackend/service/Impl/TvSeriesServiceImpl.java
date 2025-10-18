@@ -34,7 +34,9 @@ import com.lowagie.text.pdf.PdfWriter;
 import com.tvseries.TvSeriesManagementSystemBackend.dto.SearchDto;
 import com.tvseries.TvSeriesManagementSystemBackend.dto.SubmitDto;
 import com.tvseries.TvSeriesManagementSystemBackend.entity.TvSeries;
+import com.tvseries.TvSeriesManagementSystemBackend.entity.UserRequest;
 import com.tvseries.TvSeriesManagementSystemBackend.repository.TvSeriesRepository;
+import com.tvseries.TvSeriesManagementSystemBackend.repository.UserRequestRepository;
 import com.tvseries.TvSeriesManagementSystemBackend.service.TvSeriesService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -49,6 +51,12 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Autowired
     TvSeriesRepository repository;
+
+    @Autowired
+    UserRequestRepository requestRepository;
+
+    @Autowired
+    SmsService smsService;
 
     @Value("${file.upload-dir}")
     private String uploadDirPath;
@@ -470,6 +478,95 @@ public class TvSeriesServiceImpl implements TvSeriesService {
         } catch (IOException e) {
             throw new RuntimeException("Error Occured Uploading", e);
         }
+    }
+
+    @Override
+    public void patch(Long id, SubmitDto dto) {
+        log.info("Partially Updating TV series with ID : {}", id);
+
+        TvSeries existing = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Tv Series Not Found With Id" + id));
+        existing.setTitle(dto.getTitle());
+        existing.setDescription(dto.getDescription());
+        existing.setCategory(dto.getCategory());
+        existing.setLanguage(dto.getLanguage());
+        existing.setQuality(dto.getQuality());
+        existing.setFormat(dto.getFormat());
+        existing.setReleasedDate(dto.getReleasedDate());
+        existing.setSeasons(dto.getSeasons());
+        existing.setEpisodes(dto.getEpisodes());
+        existing.setTrailer(dto.getTrailer());
+        existing.setTags(dto.getTags());
+        existing.setImdb(dto.getImdb());
+        existing.setRo(dto.getRo());
+        existing.setStatus(dto.getStatus());
+        repository.save(existing);
+    }
+
+    @Override
+    public void addRequest(String fname, String lname, String email, String contact, String content,
+            MultipartFile file) {
+
+        log.info("Adding user request: {}", fname);
+
+        UserRequest userRequest = new UserRequest();
+        userRequest.setFname(fname);
+        userRequest.setLname(lname);
+        userRequest.setEmail(email);
+        userRequest.setContact(contact);
+        userRequest.setContent(content);
+        userRequest.setAddedDate(LocalDate.now().toString());
+
+        if (file != null && !file.isEmpty()) {
+            log.info("File uploaded: {}", file.getOriginalFilename());
+
+            try {
+                File uploadDir = new File(uploadDirPath);
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdirs();
+                }
+
+                List<String> allowedMimeTypes = Arrays.asList(
+                        "video/mp4",
+                        "video/avi",
+                        "video/x-msvideo",
+                        "video/mpeg",
+                        "image/jpeg",
+                        "image/png",
+                        "image/webp",
+                        "text/plain",
+                        "application/msword",
+                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                        "application/vnd.ms-excel",
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        "application/vnd.ms-powerpoint",
+                        "application/vnd.openxmlformats-officedocument.presentationml.presentation");
+                String mimeType = file.getContentType();
+                if (!allowedMimeTypes.contains(mimeType)) {
+                    log.warn("File {} rejected due to invalid mime type: {}", file.getOriginalFilename(), mimeType);
+                    throw new FileUploadException("Invalid file type");
+                }
+
+                String filePath = uploadDirPath + File.separator + file.getOriginalFilename();
+                File targetFile = new File(filePath);
+                file.transferTo(targetFile);
+                userRequest.setFilePath(filePath);
+                log.info("File successfully saved to {}", filePath);
+
+            } catch (IOException e) {
+                log.error("Error occurred while saving file", e);
+                throw new RuntimeException("Error Occured Saving", e);
+            }
+        }
+
+        requestRepository.save(userRequest);
+
+        log.info("User request from {} saved successfully", fname);
+        
+        String message = "New user request from " + fname + " " + lname + " " + content;
+        smsService.sendSms("+94 75 633 6141", message);
+
+        log.info("Sent sms to admin {}", "+94 75 633 6141");
     }
 
 }

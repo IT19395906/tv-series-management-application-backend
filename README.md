@@ -1,6 +1,6 @@
 # 📺 TV Series Management System Backend (Spring Boot)
 
-This is the **backend API** for the **TV Series Management System**, built using **Spring Boot** with **JWT-based authentication** and **role-based access control**. It supports both **Admin** and **Normal User** roles with clearly defined permissions and secure API endpoints. The system is designed using a clean **layered architecture**, follows best practices, and supports **MySQL** as the relational database.
+This is the **backend API** for the **TV Series Management System**, built using **Spring Boot** with **JWT-based authentication** and **role-based access control**. It supports both **Admin** and **Normal User** roles with clearly defined permissions and secure API endpoints. The system is designed using a clean **layered architecture**, follows best practices, and supports **MySQL** as database.
 
 ---
 
@@ -47,7 +47,7 @@ This is the **backend API** for the **TV Series Management System**, built using
 - **DTO & Validation Annotations** for clean request/response handling
 - **Exception Handling** using global handler and custom exceptions
 - **Pagination & Sorting** for API responses
-- **ModelMapper** (if used) for DTO/entity conversions
+- **ModelMapper** for DTO/entity conversions
 - **Spring Data JPA**
 - **Apache POI** for CSV generation  
 - **OpenPDF** for PDF generation  

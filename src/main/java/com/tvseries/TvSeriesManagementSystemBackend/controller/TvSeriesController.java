@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -159,6 +160,12 @@ public class TvSeriesController {
         CommonResponse<String> response = new CommonResponse<>("File Uploaded Successfully", filePath);
         return ResponseEntity.ok(response);
     }
-    
+
+    @PatchMapping("patch/{id}")
+    public ResponseEntity<CommonResponse<Void>> patch(@PathVariable Long id, @Valid @RequestBody SubmitDto dto) {
+        service.patch(id, dto);
+        CommonResponse<Void> response = new CommonResponse<>("TV Series Updated Successfully", null);
+        return ResponseEntity.ok(response);
+    }
 
 }
