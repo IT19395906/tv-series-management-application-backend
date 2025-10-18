@@ -55,6 +55,9 @@ public class TvSeriesServiceImpl implements TvSeriesService {
     @Autowired
     UserRequestRepository requestRepository;
 
+    @Autowired
+    SmsService smsService;
+
     @Value("${file.upload-dir}")
     private String uploadDirPath;
 
@@ -558,6 +561,16 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
         requestRepository.save(userRequest);
         log.info("User request from {} saved successfully", fname);
+
+        try {
+            String message = "New user request from " + fname + " " + lname + " " + content;
+            smsService.sendSms("+94 75 633 6141", message);
+
+            log.info("Sent sms to admin {}", "+94 75 633 6141");
+        } catch (Exception e) {
+            log.error("Failed to send sms to +94 75 633 6141 {}", e.getMessage());
+        }
+
     }
 
 }

@@ -14,10 +14,11 @@ public class SmsService {
 
     private final String ACCOUNT_SID = "";
     private final String AUTH_TOKEN = "";
+    private final String ACCOUNT_PHONE_NUMBER = "+94 74 369 4971";
 
     public void sendSms(String to, String body) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-        Message message = Message.creator(new PhoneNumber(to),new PhoneNumber("0743694971"),body).create();
+        Message message = Message.creator(new PhoneNumber(to),new PhoneNumber(ACCOUNT_PHONE_NUMBER),body).create();
 
         log.info("Sms sent SID {}", message.getSid());
     }
