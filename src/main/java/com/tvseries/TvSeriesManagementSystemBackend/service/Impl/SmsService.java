@@ -13,7 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class SmsService {
 
-    private final String ACCOUNT_SID = "";
+    @Value("${twilio.accountSid}")
+    private String ACCOUNT_SID;
 
     @Value("${twilio.authToken}")
     private String AUTH_TOKEN;
