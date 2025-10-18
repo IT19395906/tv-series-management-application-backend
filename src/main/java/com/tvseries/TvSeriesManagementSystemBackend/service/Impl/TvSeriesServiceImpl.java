@@ -35,7 +35,9 @@ import com.tvseries.TvSeriesManagementSystemBackend.dto.SearchDto;
 import com.tvseries.TvSeriesManagementSystemBackend.dto.SubmitDto;
 import com.tvseries.TvSeriesManagementSystemBackend.entity.TvSeries;
 import com.tvseries.TvSeriesManagementSystemBackend.entity.UserRequest;
+import com.tvseries.TvSeriesManagementSystemBackend.entity.UserRequest;
 import com.tvseries.TvSeriesManagementSystemBackend.repository.TvSeriesRepository;
+import com.tvseries.TvSeriesManagementSystemBackend.repository.UserRequestRepository;
 import com.tvseries.TvSeriesManagementSystemBackend.repository.UserRequestRepository;
 import com.tvseries.TvSeriesManagementSystemBackend.service.TvSeriesService;
 
