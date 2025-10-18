@@ -1,5 +1,6 @@
 package com.tvseries.TvSeriesManagementSystemBackend.service.Impl;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.twilio.Twilio;
@@ -13,8 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 public class SmsService {
 
     private final String ACCOUNT_SID = "";
-    private final String AUTH_TOKEN = "b49a958bfca1a4d45b524ffa27fe348c";
-    private final String ACCOUNT_PHONE_NUMBER = "+94 74 369 4971";
+
+    @Value("${twilio.authToken}")
+    private String AUTH_TOKEN;
+
+    @Value("${twilio.accountPhoneNumber}")
+    private String ACCOUNT_PHONE_NUMBER;
 
     public void sendSms(String to, String body) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
