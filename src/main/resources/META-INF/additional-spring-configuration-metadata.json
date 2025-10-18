@@ -23,5 +23,10 @@
     "name": "twilio.accountPhoneNumber",
     "type": "java.lang.String",
     "description": "A description for 'twilio.accountPhoneNumber'"
+  },
+  {
+    "name": "twilio.accountSid",
+    "type": "java.lang.String",
+    "description": "A description for 'twilio.accountSid'"
   }
 ]}
