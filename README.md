@@ -24,6 +24,7 @@ This is the **backend API** for the **TV Series Management System**, built using
   - Download **all TV series** as **CSV** file  
   - Download **TV series** as **PDF** file  
   - Download **TV series** as **ZIP** file containing CSV and PDF files
+- **Receive SMS notifications via Twilio** when user request is added
 
 #### 🔹 Normal User
 - View all available TV series  
@@ -35,7 +36,7 @@ This is the **backend API** for the **TV Series Management System**, built using
   - Selected **language**
   - Selected **year**
   - Selected **collections**
-
+- Send user requests including file uploads
 ---
 
 ## 🛠️ Tech Stack & Tools
@@ -52,6 +53,7 @@ This is the **backend API** for the **TV Series Management System**, built using
 - **Apache POI** for CSV generation  
 - **OpenPDF** for PDF generation  
 - **Java Zip Libraries** for ZIP file creation
+- **Twilio SMS Gateway** for sending notifications to Admin
 - **Swagger** for API documentation and testing
 
 ---
